@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoGuessr Rice Purity Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { text-align: center; }
+        .question { margin: 10px 0; }
+        .button { margin-top: 20px; }
+        #score { font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>GeoGuessr Rice Purity Test</h1>
+    <form id="quiz-form">
+        <!-- Add questions dynamically using JavaScript -->
+    </form>
+    <button class="button" onclick="calculateScore()">Submit</button>
+    <p id="score"></p>
+
+    <script>
+        const questions = [
+            "Have you ever completed a game of GeoGuessr?",
+            "Have you played all five rounds in a single game?",
+            "Have you played a game without moving, panning, or zooming?",
+            "Have you reached the Master rank in GeoGuessr?",
+            "Have you reached the Champion rank in GeoGuessr?",
+            "Have you guessed the exact location (within 1 meter) in a round?",
+            "Have you ever scored a perfect 25,000 points in a Classic game?",
+            "Have you recognized a location by vegetation alone?",
+            "Have you played Battle Royale mode?",
+            "Have you won a game of Battle Royale?",
+            "Have you ever recognized a country based on road markings?",
+            "Have you played a GeoGuessr map in a language you don't speak?",
+            "Have you ever recognized a location from Google Street View cars?",
+            "Have you played the 'Famous Places' map?",
+            "Have you played the 'A Diverse World' map?",
+            "Have you created your own GeoGuessr map?",
+            "Have you recognized a country by its traffic signs?",
+            "Have you used Meta knowledge, like bollards and guardrails, to make a guess?",
+            "Have you guessed a location based on the weather?",
+            "Have you guessed a location based on license plates?",
+            "Have you recognized a country from its architecture?",
+            "Have you ever played GeoGuessr on a continent-specific map?",
+            "Have you played GeoGuessr in 'Explorer Mode' to earn badges?",
+            "Have you earned an Explorer Mode badge for a country?",
+            "Have you earned a perfect score in Explorer Mode for a country?",
+            "Have you recognized the landscape of New Zealand?",
+            "Have you recognized the streets of a specific U.S. state?",
+            "Have you played GeoGuessr on mobile?",
+            "Have you won a streak game (like Country or City Streak)?",
+            "Have you reached a 10+ streak in Country Streak mode?",
+            "Have you guessed a location based on soil color?",
+            "Have you participated in GeoGuessr Leagues?",
+            "Have you watched a professional GeoGuessr streamer for tips?",
+            "Have you ever used compass angles for pinpointing?",
+            "Have you recognized a language just from text on a sign?",
+            "Have you ever joined a GeoGuessr subreddit or forum?",
+            "Have you played GeoGuessr for more than 5 hours in one day?",
+            "Have you ever identified a place using electric poles?",
+            "Have you correctly guessed Japan without any kanji signs?",
+            "Have you recognized a place based on Google’s blurring patterns?",
+            "Have you completed a round in under 5 seconds?",
+            "Have you played on 'No Blurry Images' or 'No Moving' maps?",
+            "Have you tried to beat your friends in GeoGuessr competitions?",
+            "Have you guessed a place correctly based on a single tree type?",
+            "Have you scored over 15,000 points in a game without moving?",
+            "Have you ever recognized Australia based on its road conditions?",
+            "Have you figured out South American countries based on vegetation?",
+            "Have you guessed the U.S. based on road signs alone?",
+            "Have you recognized a country from street lines alone?",
+            "Have you used shadow directions for hemispheric hints?",
+            "Have you used Street View meta to guess the exact year of imagery?",
+            "Have you used mountains or hills to narrow down a region?",
+            "Have you guessed a Scandinavian country based on terrain?",
+            "Have you recognized an African country based on soil color?",
+            "Have you ever spotted Kyrgyzstan by its mountainous background?",
+            "Have you guessed a Canadian province correctly?",
+            "Have you guessed a South American country without Spanish text?",
+            "Have you recognized a European country based on architecture?",
+            "Have you recognized a country based on its pavement color?",
+            "Have you participated in a GeoGuessr live event or competition?",
+            "Have you watched tips or tutorials on GeoGuessr for improvement?",
+            "Have you guessed a region by the color of utility boxes?",
+            "Have you used a map's curvature as a GeoGuessr clue?",
+            "Have you guessed Russia correctly without Cyrillic text?",
+            "Have you reached a Country Streak of 50+?",
+            "Have you achieved a 25+ streak in City Streak?",
+            "Have you recognized an island country by its coastline?",
+            "Have you used sun angle to determine hemisphere?",
+            "Have you guessed based on infrastructure alone?",
+            "Have you played 'NMPZ' (No Moving, Panning, or Zooming) exclusively?",
+            "Have you recognized Israel based on landscape or signage?",
+            "Have you guessed Malta without seeing any text?",
+            "Have you recognized Italy by its unique architecture and roads?",
+            "Have you identified Germany from the type of car plates?",
+            "Have you recognized the Philippines by its urban areas?",
+            "Have you recognized a region by the cloud type?",
+            "Have you recognized a country by its power lines?",
+            "Have you reached the Elite rank in GeoGuessr?",
+            "Have you identified a Southeast Asian country without writing?",
+            "Have you hit a 15+ streak on the World Map map?",
+            "Have you recognized Iceland by landscape alone?",
+            "Have you recognized a South Asian country from vegetation?",
+            "Have you recognized Portugal based on road markers?",
+            "Have you identified a Caribbean island by vegetation?",
+            "Have you recognized Malaysia based on environmental details?",
+            "Have you recognized Jordan without seeing Arabic text?",
+            "Have you recognized Uruguay without seeing any Spanish?",
+            "Have you recognized Colombia from plant types?",
+            "Have you reached 20,000+ points in an NMPZ game?",
+            "Have you used climate patterns to identify a region?",
+            "Have you guessed Japan based on house style alone?",
+            "Have you guessed an area in Brazil by its landscape?",
+            "Have you guessed Egypt from its environment?",
+            "Have you ever reached a rank higher than Master?",
+            "Have you recognized South Africa by road conditions?",
+            "Have you recognized Argentina based on architecture?",
+            "Have you used animal sightings as hints?",
+            "Have you identified specific trees (like baobabs) to guess Africa?",
+            "Have you won multiple games in a GeoGuessr streak?",
+            "Have you reached a high rank in multiple game modes?"
+        ];
+
+        function loadQuestions() {
+            const form = document.getElementById('quiz-form');
+            questions.forEach((question, index) => {
+                const div = document.createElement('div');
+                div.classList.add('question');
+                div.innerHTML = `
+                    <input type="checkbox" id="q${index}">
+                    <label for="q${index}">${question}</label>
+                `;
+                form.appendChild(div);
+            });
+        }
+
+        function calculateScore() {
+            let score = 0;
+            questions.forEach((_, index) => {
+                if (document.getElementById(`q${index}`).checked) {
+                    score++;
+                }
+            });
+
+            let result;
+            if (score <= 20) {
+                result = "GeoGuessr Beginner";
+            } else if (score <= 40) {
+                result = "GeoGuessr Enthusiast";
+            } else if (score <= 60) {
+                result = "GeoGuessr Adventurer";
+            } else if (score <= 80) {
+                result = "GeoGuessr Expert";
+            } else {
+                result = "GeoGuessr Pro";
+            }
+
+            document.getElementById('score').textContent = `Your score: ${score}. You are a ${result}!`;
+        }
+
+        // Load questions on page load
+        window.onload = loadQuestions;
+    </script>
+</body>
+</html>
